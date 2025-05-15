@@ -1,0 +1,8 @@
+{
+    "welcome": "Welcome to the App",
+    "button.submit": "Submit",
+    "settings.title": "Settings",
+    "settings.language": "Change Language",
+    "settings.theme.dark": "Switch to Dark Mode",
+    "settings.theme.light": "Switch to Light Mode"
+}
