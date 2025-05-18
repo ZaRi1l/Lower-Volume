@@ -1,2 +1,12 @@
 export { Button } from './Button';
 export { Card } from './Card';
+export { Collapsible } from './Collapsible';
+export { ThemedText } from './ThemedText';
+export { ThemedView } from './ThemedView';
+export { IconSymbol } from './ui/IconSymbol';
+export { ExternalLink } from './ExternalLink';
+export { HapticTab } from './HapticTab';
+export { HelloWave } from './HelloWave';
+export { ParallaxScrollView } from './ParallaxScrollView';
+export { Slider } from './Slider';
+export { Checkbox } from './Checkbox';

@@ -32,9 +32,15 @@ i18n
     interpolation: {
       escapeValue: false,
     },
+    react: {
+      useSuspense: false
+    }
   });
 
-loadStoredLanguage();
+// Load stored language after i18n is initialized
+setTimeout(() => {
+  loadStoredLanguage();
+}, 0);
 
 export const changeLanguage = async (language: string) => {
   try {
