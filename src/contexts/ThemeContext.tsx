@@ -1,6 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { useColorScheme as useSystemColorScheme } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { DarkTheme, DefaultTheme, ThemeProvider as NavigationThemeProvider } from '@react-navigation/native';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -15,8 +15,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const systemColorScheme = useSystemColorScheme();
-  const [theme, setTheme] = useState<Theme>(systemColorScheme ?? 'light');
+  const [theme, setTheme] = useState<Theme>('light');
 
   // 저장된 테마 설정 불러오기
   useEffect(() => {
@@ -25,8 +24,6 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const storedTheme = await AsyncStorage.getItem(THEME_KEY);
         if (storedTheme === 'light' || storedTheme === 'dark') {
           setTheme(storedTheme);
-        } else if (systemColorScheme) {
-          setTheme(systemColorScheme);
         }
       } catch (error) {
         console.error('Failed to load theme setting:', error);
@@ -47,7 +44,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-      {children}
+      <NavigationThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
+        {children}
+      </NavigationThemeProvider>
     </ThemeContext.Provider>
   );
 }
@@ -55,7 +54,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 export function useTheme() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('useTheme must be used within a ThemeProvider');
+    console.warn('useTheme is being used outside of ThemeProvider');
+    return { theme: 'light', setTheme: () => {}, toggleTheme: () => {} };
   }
   return context;
 }

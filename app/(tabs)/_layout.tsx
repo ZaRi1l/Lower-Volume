@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { useTranslation } from 'react-i18next';
-import { useThemeColor } from '../../src/hooks/useThemeColor';
 import { useTheme } from '../../src/contexts/ThemeContext';
+import { useThemeColor } from '../../src/hooks/useThemeColor';
 
 export default function TabLayout() {
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="index"
         options={{
           title: t('welcome'),
           tabBarLabel: t('welcome'),
@@ -34,6 +34,13 @@ export default function TabLayout() {
         options={{
           title: t('settings.title'),
           tabBarLabel: t('settings.title'),
+        }}
+      />
+      <Tabs.Screen
+        name="home"
+        options={{
+          title: '',
+          tabBarButton: () => null,
         }}
       />
     </Tabs>

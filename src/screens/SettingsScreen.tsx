@@ -1,17 +1,29 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button } from '../components/Button';
-import { useThemeColor } from '../hooks/useThemeColor';
-import { useTheme } from '../contexts/ThemeContext';
 import { layout } from '../constants/layout';
-import { changeLanguage } from '../i18n';
-import i18next from 'i18next';
+import { useTheme } from '../contexts/ThemeContext';
+import { useThemeColor } from '../hooks/useThemeColor';
 
 export default function SettingsScreen() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
+  const [currentLang, setCurrentLang] = useState(i18n.language);
+
+  // 언어 변경 감지
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      setCurrentLang(i18n.language);
+    };
+
+    i18n.on('languageChanged', handleLanguageChange);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChange);
+    };
+  }, [i18n]);
 
   return (
     <View style={[styles.container, { backgroundColor }]}>
@@ -19,9 +31,8 @@ export default function SettingsScreen() {
       <Button
         title={t('settings.language')}
         onPress={() => {
-          const currentLang = i18next.language;
-          const newLang = currentLang === 'ko' ? 'en' : 'ko';
-          changeLanguage(newLang);
+          const newLang = i18n.language === 'ko' ? 'en' : 'ko';
+          i18n.changeLanguage(newLang);
         }}
       />
       <Button
